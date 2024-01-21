@@ -1,0 +1,3 @@
+import config
+from face_recognition_process import face_recognition_process
+import start_predict
