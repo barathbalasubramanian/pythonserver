@@ -9,9 +9,6 @@ import tqdm
 from config import get_dir_name
 
 def face_recognition_process(selfie_folder_path, photos_path, output_path):
-    print("################", output_path)
-    print("[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]", photos_path)
-    
     img_names = os.listdir(photos_path)
     selfie_encodings = {}
     test_images_encodings = {}
@@ -35,7 +32,6 @@ def face_recognition_process(selfie_folder_path, photos_path, output_path):
         try:
             test_face_encoding = fr.face_encodings(test_image)[0]
         except:
-            print("Exception Here #########################")
             continue
         os.chdir(output_path)
         # try:
@@ -46,20 +42,16 @@ def face_recognition_process(selfie_folder_path, photos_path, output_path):
             
         selfie_encodings[name] = test_face_encoding
         for img_name in img_names:
-            print(img_name, "-------------------")
             for target_face_encoding in test_images_encodings[img_name]:
-                print("------------1111")
                 if fr.compare_faces(
                     [target_face_encoding], test_face_encoding, tolerance=0.4
                 )[0]:
-                    print("725975357370977375893765737583757387589738787777897837873878")
-                    print(photos_path, output_path)
-                    print(os.path.join(photos_path, img_name), "-----------------------")
-                    print(os.path.join(output_path, name, img_name), "------------------------",os.path.join(output_path, name))
-                    os.makedirs(os.path.join(output_path, name), exist_ok=True)
-                    print("Directory created ---------------")
+                    output_directory = os.path.join(output_path, name)
+                    os.makedirs(output_directory, exist_ok=True)
+
+                    # Copy the file
                     shutil.copy(
                         os.path.join(photos_path, img_name),
-                        os.path.join(output_path, name, img_name),
+                        os.path.join(output_directory, img_name),
                     )
                     break
